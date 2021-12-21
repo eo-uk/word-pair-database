@@ -1,0 +1,374 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+/* Style */
+:root {
+    --color1: #0096C7;
+    --color2: #fe5656;
+    --color3: #03045E;
+    --color4: #f8feff;
+}
+
+::-moz-selection {
+    color: #fff;
+    background: var(--color2);
+}
+::selection {
+    color: #fff;
+    background: var(--color2);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    word-break: break-word;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    padding: 1em;
+    background-color: var(--color4);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    font-size: 2.5em;
+    z-index: 9999;
+}
+
+h1 {
+    font-family: 'Special Elite', cursive;
+}
+
+h1 span {
+    color: var(--color2);
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+input {
+    margin: 0.5em;
+    padding: 0.5em;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    border: 1px solid var(--color3);
+}
+
+input:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem #007da550;
+    z-index: 10;
+}
+
+i {
+    margin-right: 0.3em;
+}
+section,
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer {
+    font-size: 0.8em;
+    padding: 2em;
+    background-color: var(--color4);
+}
+
+header .subtitle {
+    font-size: 1rem;
+}
+.search {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5em
+}
+.search-form {
+    display: flex;
+}
+
+.search input,
+.search button {
+    transition: 0.3s;
+}
+.search input[type=text] {
+    padding: 0.5em;
+    width: 10em;
+    font-size: 1rem;
+    margin: 0;  
+    border: 1px solid var(--color3);
+    border-radius: 0;
+    border-right: none;
+}
+.search input[type=text]:first-child {
+    border-radius: 4px 0 0 4px;   
+}
+.search input[type=submit] {
+    border-radius: 0 4px 4px 0;
+    margin:0;
+}
+.search button {
+    border-radius: 0 4px 4px 0;
+    margin:0;
+}
+
+.button {
+    padding: 0.6em 1em;
+    background-color: var(--color1);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    transition: 0.3s ease-out;
+    cursor: pointer;
+}
+.button:hover {
+    background-color: #0083af;
+}
+.button:active {
+    background-color: #007da5;
+}
+.button:focus {
+    box-shadow: 0 0 0 0.2rem #007da550;
+}
+.button.active { /* Not psuedo selector */
+    background-color: #007399;
+}
+
+.button.delete,
+.button.reset {
+    background-color: var(--color2);
+}
+.button.delete:hover,
+.button.reset:hover {
+    background-color: #dd4b4b;
+}
+.button.delete:active,
+.button.reset:active {
+    background-color: #b93b3b;
+}
+.button.delete:focus,
+.button.reset:focus {
+    box-shadow: 0 0 0 0.2rem #fe565650;
+}
+
+.pairs-list {
+    width: 80%;
+    max-width: 900px;
+    min-width: 300px;
+    margin: auto;
+    margin-top: 2em;
+}
+.pairs-item {
+    color: var(--color3);
+    background-color: var(--color4);
+    padding: 0.7em;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+    margin: 1em;
+}
+.pairs-item .content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.pairs-item .form form {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+
+    overflow: hidden;
+    transition: 0.3s ease-in-out;
+    max-height: 400px;
+}
+.pairs-item .form form .form-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.hidden {
+    max-height: 0 !important;
+    margin: 0 !important;
+}
+
+.pairs-item .values {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 70%;
+}
+.pairs-item .word,
+.pairs-item .language {
+    margin: 0.5em;
+    text-transform: capitalize;
+}
+.pairs-item .language {
+    font-size: 0.8em;
+    color: var(--color1);
+}
+.pairs-item .source,
+.pairs-item .target {
+    width: 45%;
+    padding: 0.5em;
+}
+.pairs-item .field {
+    position: relative;
+    font-size: 0.8em;
+    text-transform: capitalize;
+    color: #76778d;
+    margin-right: 0.5em;
+}
+
+.refresh {
+    margin: 2em;
+    margin-bottom: 5em;
+    flex-direction: column;
+}
+.refresh p {
+    font-size: 0.9em;
+    margin-top: 1.5em;
+}
+.refresh a {
+    color: var(--color2);
+}
+.refresh .button {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.pairs-add-form {
+    margin: auto;
+    background-color: var(--color4);
+    flex-direction: column;
+    box-shadow: rgb(50 50 93 / 25%) 0px -7px 27px -5px, rgb(0 0 0 / 30%) 0px -2px 16px -8px;
+}
+.pairs-add-form h2 {
+    margin-top: 2em;
+    margin-bottom: 1em;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+.pairs-add-form form {
+    margin: 1em;
+}
+.form-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+footer a {
+    color: var(--color2);
+}
+
+
+@media only screen and (max-width: 900px) {
+    .pairs-item .values,
+    .pairs-item .source,
+    .pairs-item .target,
+    .pairs-item .buttons {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .pairs-item .source,
+    .pairs-item .target {
+        width: 50%;
+    }
+    .pairs-item .buttons .button {
+        margin: 1em 0.5em 0.5em 0.5em;
+    }
+    .pairs-item .field {
+        width: 100%;
+        text-align: center;
+    }
+    .pairs-item .field::before {
+        content: " ";
+        border-bottom: 1px solid grey;
+        position: absolute;
+        left: calc(50% - 7.5em);
+        top: 50%;
+        width: 5em;
+    }
+    .pairs-item .field::after {
+        content: " ";
+        border-bottom: 1px solid grey;
+        position: absolute;
+        right: calc(50% - 7.5em);
+        top: 50%;
+        width: 5em;
+    }
+    header {
+        font-size: 2em;
+    }
+    header .search-form {
+        flex-direction: column;
+    }
+    header .search-form input,
+    header .search-form button {
+        border-radius: 0 !important;
+        border-bottom: none !important;
+    }
+    header .search-form input[type=text] {
+        border-right: 1px solid var(--color3);
+        width: 15em;
+    }
+}

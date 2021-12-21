@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WordKeeper | A Word Pair Database</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Special+Elite&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Style -->
+    <link rel="stylesheet" href="{% static "main/style.css" %}">
+</head>
+<body>
+    <main id="app">
+        {% verbatim %}
+        <header>
+            <div class="logo">
+
+                <a href="">
+                    <h1>Word<span>Keeper</span></h1>
+                </a>
+                <p class="subtitle">Save your word pairs in any language.</p>
+
+            </div>
+            <div class="search">
+
+                <form action="" class="search-form">
+                    <input type="text" ref="searchWord" placeholder="Word to Search">
+                    <input type="text" ref="searchField" placeholder="Field to Search">
+                    <input type="text" ref="searchSourceLang" placeholder="Source Language">
+                    <input type="text" ref="searchTargetLang" placeholder="Target Language">
+                    <button class="button" @click.prevent="submitSearchForm">
+                        <i class="fas fa-search"></i>
+                        <span>Search</span>
+                    </button>
+                </form>
+
+            </div>
+        </header>
+        <section class="pairs-list">
+            <ol>
+                <li v-for="(pair, index) in pairs" :key="pair.id" ref="pairs">
+                    <div class="pairs-item">
+                        <div class="content">
+                            <span class="values">
+
+                                <span class="source">
+                                    <span class="word">{{ pair.sourceWord }}</span>
+                                    <small class="language">{{ pair.sourceLang }}</small>
+                                </span>
+
+                                <span class="target">
+                                    <span class="word">{{ pair.targetWord }}</span>
+                                    <small class="language">{{ pair.targetLang }}</small>
+                                </span>
+
+                            </span>
+                            <span class="buttons">
+
+                                <span class="field">{{ pair.field }}</span>
+                                <button class="button" v-bind:class="{ active: pair.isBeingEdited }" v-on:click="revealEditForm(pair)">
+                                    <i class="far fa-edit"></i>
+                                    <span>Edit</span>
+                                </button>
+
+                                <button class="button delete" v-on:click="deletePair(pair)">
+                                    <i class="fas fa-times"></i>
+                                    <span>Delete</span>
+                                </button>
+
+                            </span>
+                        </div>
+                        <div class="form">
+
+                            <form action="" v-bind:class="{ hidden: !pair.isBeingEdited }" >
+                                <div class="form-group">
+                                    <input type="text" ref="editSourceLang" name="editSourceLang" placeholder="Source Language">
+                                    <input type="text" ref="editSourceWord" name="editSourceWord" placeholder="Source Word">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" ref="editTargetLang" name="editTargetLang" placeholder="Target Language">
+                                    <input type="text" ref="editTargetWord" name="editTargetWord" placeholder="Target Word">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" ref="editWordField" name="editWordField" placeholder="Word Field">
+                                </div>
+                                <input class="button" @click.prevent="submitEditForm(pair.id, index)" type="submit" value="Submit">
+                            </form>
+
+                        </div>
+                    </div>
+                </li>
+            </ol>
+        </section>
+
+        <section class="refresh">
+
+            <button class="button" v-on:click="refreshPairs">
+                <i class="fas fa-sync-alt"></i>
+                <span>Refresh</span>
+            </button>
+
+            <p>
+                Using REST API. <a href="/">Click Here</a> to switch to local storage.
+            </p>
+
+        </section>
+
+        <section class="pairs-add-form">
+            <div>
+                <h2>Create a Word Pair</h2>
+            </div>
+            <div>
+
+                <form action="" ref="addPairForm">
+                    <div class="form-group">
+                        <input type="text" ref="addSourceWord" name="addSourceWord" placeholder="Source Word" required>
+                        <input type="text" ref="addSourceLang" name="addSourceLang"placeholder="Source Language" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" ref="addTargetWord" name="addTargetWord" placeholder="Target Word" required>
+                        <input type="text" ref="addTargetLang" name="addTargetLang" placeholder="Target Language" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" ref="addWordField" name="addWordField" placeholder="Word Field">
+                    </div>
+                    <div class="form-group">
+                        <input class="button" @click.prevent="submitAddForm()" type="submit" value="Submit">
+                    </div>
+                </form>
+
+            </div>
+        </section>
+        {% endverbatim %}
+    </main>
+    <footer>
+        <small>&copy; Copyright 2021, <a href="https://github.com/eo-uk">eo-uk</a>. All rights reserved.</small>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js" integrity="sha512-Meww2sXqNHxI1+5Dyh/9KAtvI9RZSA4c1K2k5iL02oiPO/RH3Q30L3M1albtqMg50u4gRTYdV4EXOQqXEI336A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        var app = new Vue({
+        el: '#app',
+            data: {
+                pairs: []
+            },
+            methods: {
+
+                deletePair: function (pair) {
+                    let csrftoken = Cookies.get('csrftoken');
+                    fetch('/api/words/delete/'+pair.id.toString(), {
+                        method: 'delete',
+                        headers: {
+                            "X-CSRFToken": csrftoken,
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                        }),
+                        credentials: 'same-origin'
+                    })
+                    .then(response => response.json())
+                    .then((data) => {
+                        this.refreshPairs();
+                    });
+                },
+
+                revealEditForm: function (pair) {
+                    pair.isBeingEdited = !pair.isBeingEdited;
+                },
+
+                editPair: function (data) {
+                    let csrftoken = Cookies.get('csrftoken');
+                    fetch('/api/words/update/'+data.id.toString(), {
+                        method: 'put',
+                        headers: {
+                            "X-CSRFToken": csrftoken,
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            sourceLang: data.sourceLang,
+                            sourceWord: data.sourceWord,
+                            targetLang: data.targetLang,
+                            targetWord: data.targetWord,
+                            field: data.field,
+                            csrfmiddlewaretoken: '{{ csrf_token }}'
+                        }),
+                        credentials: 'same-origin'
+                    })
+                    .then(response => response.json())
+                    .then((data) => {
+                        this.refreshPairs();
+                    });
+                },
+
+                submitAddForm: function () {
+                    let sourceWord = this.$refs.addSourceWord.value.toLowerCase();
+                    let sourceLang = this.$refs.addSourceLang.value.toLowerCase();
+                    let targetWord = this.$refs.addTargetWord.value.toLowerCase();
+                    let targetLang = this.$refs.addTargetLang.value.toLowerCase();
+                    let field = this.$refs.addWordField.value ? this.$refs.addWordField.value.toLowerCase() : "general";
+
+                    let csrftoken = Cookies.get('csrftoken');
+                    fetch('/api/words/add', {
+                        method: 'post',
+                        headers: {
+                            "X-CSRFToken": csrftoken,
+                            'Accept': 'application/json, text/plain, */*',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            sourceLang: sourceLang,
+                            sourceWord: sourceWord,
+                            targetLang: targetLang,
+                            targetWord: targetWord,
+                            field: field,
+                            csrfmiddlewaretoken: '{{ csrf_token }}'
+                        }),
+                        credentials: 'same-origin'
+                    })
+                    .then(response => response.json())
+                    .then((data) => {
+                        this.refreshPairs();
+                    });
+                    this.$refs.addSourceWord.value = '';
+                    this.$refs.addSourceLang.value = '';
+                    this.$refs.addTargetWord.value = '';
+                    this.$refs.addTargetLang.value = '';
+                    this.$refs.addWordField.value = '';
+                },
+
+                submitEditForm: function (id, index) {
+                    let sourceWord = this.$refs.pairs[index].querySelector("input[name='editSourceWord']").value;
+                    let sourceLang = this.$refs.pairs[index].querySelector("input[name='editSourceLang']").value;
+                    let targetWord = this.$refs.pairs[index].querySelector("input[name='editTargetWord']").value;
+                    let targetLang = this.$refs.pairs[index].querySelector("input[name='editTargetLang']").value;
+                    let field = this.$refs.pairs[index].querySelector("input[name='editWordField']").value;
+
+                    sourceWord = sourceWord ? sourceWord.toLowerCase() : this.$refs.pairs[index].querySelector(".source .word").innerText;
+                    sourceLang = sourceLang ? sourceLang.toLowerCase() : this.$refs.pairs[index].querySelector(".source .language").innerText;
+                    targetWord = targetWord ? targetWord.toLowerCase() : this.$refs.pairs[index].querySelector(".target .word").innerText;
+                    targetLang = targetLang ? targetLang.toLowerCase() : this.$refs.pairs[index].querySelector(".target .language").innerText;
+                    field = field ? field.toLowerCase() : this.$refs.pairs[index].querySelector(".field").innerText;
+
+                    let newPair = {
+                        id: id,
+                        sourceLang: sourceLang,
+                        sourceWord: sourceWord,
+                        targetLang: targetLang,
+                        targetWord: targetWord,
+                        field: field ? field : "General"
+                    }
+                    this.editPair(newPair);
+                },
+
+                submitSearchForm: function () {
+                    this.refreshPairs({
+                        searchWord: this.$refs.searchWord.value,
+                        searchField: this.$refs.searchField.value,
+                        searchSourceLang: this.$refs.searchSourceLang.value,
+                        searchTargetLang: this.$refs.searchTargetLang.value
+                    });
+                },
+
+                refreshPairs: function (searchCriteria) {
+                    fetch('/api/words')
+                    .then(response => response.json())
+                    .then(data => this.pairs = data)
+                    .then(() => {
+                        if (!searchCriteria) {
+                            return;
+                        }
+
+                        const {searchWord, searchField, searchSourceLang, searchTargetLang} = searchCriteria;
+                        if (searchWord) {
+                            this.pairs = this.pairs.filter(function (pair) {
+                                return pair.sourceWord == searchWord.toLowerCase();
+                            });
+                        }
+                        if (searchField) {
+                            this.pairs = this.pairs.filter(function (pair) {
+                                return pair.field == searchField.toLowerCase();
+                            });
+                        }
+                        if (searchSourceLang) {
+                            this.pairs = this.pairs.filter(function (pair) {
+                                return pair.sourceLang == searchSourceLang.toLowerCase() || pair.targetLang == searchSourceLang.toLowerCase();
+                            });
+                        }
+                        if (searchTargetLang) {
+                            this.pairs = this.pairs.filter(function (pair) {
+                                return pair.targetLang == searchTargetLang.toLowerCase() || pair.sourceLang == searchTargetLang.toLowerCase();
+                            });
+                        }
+                    });
+                }
+            },
+
+            created() {
+                this.refreshPairs();
+            }
+
+        })
+    </script>
+</body>
+</html>
